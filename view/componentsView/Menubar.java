@@ -63,7 +63,6 @@ public class Menubar extends JMenuBar {
         jMenuView.add(refresh);
         return jMenuView;
     }
-
     public JPanel getJpWrapper() {
         return jpWrapper;
     }

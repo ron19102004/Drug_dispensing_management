@@ -16,7 +16,7 @@ public class ContentNew extends JPanel {
     private JPanel contentNew;
     private ActionListener actionListener;
     private JComboBox<Object> drug;
-    private JComboBox<Object> amount_drug;
+    private JTextField amount_drug;
     private Vector<Vector<java.io.Serializable>> rows;
     private Vector<Object> cols;
 
@@ -67,18 +67,14 @@ public class ContentNew extends JPanel {
         ArrayList<Drug> arrDrug = DrugDAO.getInstance().selectAll();
         Vector<Object> nameDrug = new Vector<>();
         for(Drug drug : arrDrug){
-            nameDrug.add(drug.getName_drug());
+            nameDrug.add(drug.getName_drug()+" - "+" Còn lại " + drug.getRemainingMount()+" sản phẩm");
         }
         this.drug = new JComboBox<>(nameDrug);
         this.drug.setFont(font_f);
         this.drug.setBorder(BorderFactory.createTitledBorder("Tên thuốc"));
         formDrugLeft.add(this.drug);
 
-        Vector<Object> amount_drugVT = new Vector<>();
-        for(int i = 1; i<=100; i++){
-            amount_drugVT.add(i);
-        }
-        this.amount_drug = new JComboBox<>(amount_drugVT);
+        this.amount_drug = new JTextField();
         this.amount_drug.setFont(font_f);
         this.amount_drug.setBorder(BorderFactory.createTitledBorder("Số lượng (số sản phẩm)"));
         formDrugLeft.add(this.amount_drug);
@@ -186,7 +182,7 @@ public class ContentNew extends JPanel {
         return drug;
     }
 
-    public JComboBox<Object> getAmount_drug() {
+    public JTextField getAmount_drug() {
         return amount_drug;
     }
 

@@ -26,8 +26,9 @@ public class MainView extends JFrame {
         this.setIconImage(icon.getImage());
 
         //Manage Dispensing
-        JPanel jpContent = new Content().getContent();
-        ActionListener toolbarManageDispenseAL = new ToolbarManageDispenseAL(jpContent);
+        Content content = new Content();
+        JPanel jpContent = content.getContent();
+        ActionListener toolbarManageDispenseAL = new ToolbarManageDispenseAL(jpContent,content);
         JPanel main = new JPanel(new BorderLayout());
         main.add(new ToolBar(toolbarManageDispenseAL).init(),BorderLayout.WEST);
         main.add(jpContent,BorderLayout.CENTER);

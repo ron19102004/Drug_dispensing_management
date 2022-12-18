@@ -21,6 +21,19 @@ public class Content extends JPanel {
         this.content.add("new",this.contentNew.getContentNew());
         this.content.add("edit",this.contentEdit.getContentEdit());
     }
+
+    public ContentHome getContentHome() {
+        return contentHome;
+    }
+
+    public ContentEdit getContentEdit() {
+        return contentEdit;
+    }
+
+    public ContentNew getContentNew() {
+        return contentNew;
+    }
+
     public JPanel getContent() {
         return this.content;
     }

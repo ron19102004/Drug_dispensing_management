@@ -16,7 +16,7 @@ public class ContentNewAL implements ActionListener {
         String src = e.getActionCommand();
         if(src.equals("Thêm thuốc")){
             System.out.println(this.contentNew.getDrug().getSelectedIndex());
-            System.out.println(this.contentNew.getAmount_drug().getSelectedIndex());
+            System.out.println(this.contentNew.getAmount_drug().getText());
         } else if (src.equals("Danh sách đã chọn")) {
             new ListDrugSelected(this.contentNew.getCols(),this.contentNew.getRows());
         }
