@@ -1,23 +1,32 @@
 package model;
 
 public class Patient {
-    private String id_patient;
+    private int id_patient;
     private String name_patient;
-    private String drug_content;
-    private String drug_description;
+    private String cccd_patient;
+    private String phone_patient;
+    private String address_patient;
 
-    public Patient(String id_patient, String name_patient, String drug_content, String drug_description) {
+    public Patient(int id_patient, String name_patient, String cccd_patient, String phone_patient, String address_patient) {
         this.id_patient = id_patient;
         this.name_patient = name_patient;
-        this.drug_content = drug_content;
-        this.drug_description = drug_description;
+        this.cccd_patient = cccd_patient;
+        this.phone_patient = phone_patient;
+        this.address_patient = address_patient;
+    }
+    public String getCccd_patient() {
+        return cccd_patient;
     }
 
-    public String getId_patient() {
+    public void setCccd_patient(String cccd_patient) {
+        this.cccd_patient = cccd_patient;
+    }
+
+    public int getId_patient() {
         return id_patient;
     }
 
-    public void setId_patient(String id_patient) {
+    public void setId_patient(int id_patient) {
         this.id_patient = id_patient;
     }
 
@@ -29,19 +38,19 @@ public class Patient {
         this.name_patient = name_patient;
     }
 
-    public String getDrug_content() {
-        return drug_content;
+    public String getPhone_patient() {
+        return phone_patient;
     }
 
-    public void setDrug_content(String drug_content) {
-        this.drug_content = drug_content;
+    public void setPhone_patient(String phone_patient) {
+        this.phone_patient = phone_patient;
     }
 
-    public String getDrug_description() {
-        return drug_description;
+    public String getAddress_patient() {
+        return address_patient;
     }
 
-    public void setDrug_description(String drug_description) {
-        this.drug_description = drug_description;
+    public void setAddress_patient(String address_patient) {
+        this.address_patient = address_patient;
     }
 }

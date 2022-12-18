@@ -1,6 +1,6 @@
 package view;
 
-import controller.LoginController;
+import actionListener.LoginAL;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,7 +46,7 @@ public class LoginForm extends JFrame {
         jPanelPassword.add(jLabelPassword);
         jPanelPassword.add(this.password);
 
-        ActionListener actionListener = new LoginController(this);
+        ActionListener actionListener = new LoginAL(this);
         JButton submit = new JButton("Đăng nhập");
         submit.setForeground(Color.WHITE);
         submit.setBorderPainted(false);

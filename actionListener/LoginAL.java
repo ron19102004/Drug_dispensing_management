@@ -1,4 +1,4 @@
-package controller;
+package actionListener;
 
 import database.JDBCUtil;
 import view.LoginForm;
@@ -13,9 +13,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 
-public class LoginController implements ActionListener {
+public class LoginAL implements ActionListener {
     private LoginForm loginForm;
-    public LoginController(LoginForm loginForm){
+    public LoginAL(LoginForm loginForm){
         this.loginForm = loginForm;
     }
     @Override
