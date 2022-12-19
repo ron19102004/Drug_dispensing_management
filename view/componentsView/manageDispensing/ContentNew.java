@@ -1,6 +1,7 @@
 package view.componentsView.manageDispensing;
 
 import actionListener.manageDisspensing.ContentNewAL;
+import controller.DrugController;
 import dataAccessObject.DrugDAO;
 import model.Drug;
 
@@ -64,7 +65,7 @@ public class ContentNew extends JPanel {
         JPanel formDrugLeft = new JPanel();
         formDrugLeft.setLayout(new BoxLayout(formDrugLeft,BoxLayout.Y_AXIS));
 
-        ArrayList<Drug> arrDrug = DrugDAO.getInstance().selectAll();
+        ArrayList<Drug> arrDrug = DrugController.getInstance().getDrugs();
         Vector<Object> nameDrug = new Vector<>();
         for(Drug drug : arrDrug){
             nameDrug.add(drug.getName_drug()+" - "+" Còn lại " + drug.getRemainingMount()+" sản phẩm");
@@ -146,6 +147,7 @@ public class ContentNew extends JPanel {
         formDrug.add(dateDispensing);
 
         JPanel footer = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+
         JButton delInfo = new JButton("Xóa dữ liệu đã nhập");
         delInfo.setFont(font_f);
         delInfo.setBackground(Color.RED);
