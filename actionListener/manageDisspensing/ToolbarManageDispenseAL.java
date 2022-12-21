@@ -1,6 +1,8 @@
 package actionListener.manageDisspensing;
 
 import controller.PatientController;
+import view.LoginForm;
+import view.MainView;
 import view.componentsView.manageDispensing.Content;
 import view.componentsView.manageDispensing.ContentHome;
 
@@ -12,9 +14,11 @@ import java.awt.event.ActionListener;
 public class ToolbarManageDispenseAL implements ActionListener {
     private JPanel jpContent;
     private Content content;
-    public ToolbarManageDispenseAL(JPanel jpContent, Content content){
+    private MainView mainView;
+    public ToolbarManageDispenseAL(JPanel jpContent, Content content, MainView mainView){
         this.jpContent = jpContent;
         this.content = content;
+        this.mainView = mainView;
     }
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -30,6 +34,9 @@ public class ToolbarManageDispenseAL implements ActionListener {
             edit.show(this.jpContent,"edit");
         } else if (src.equals("refresh")) {
             this.content.getContentHome().refreshTable();
+        } else if(src.equals("logout")){
+            this.mainView.setVisible(false);
+            new LoginForm();
         }
     }
 }

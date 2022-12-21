@@ -10,16 +10,40 @@ public class PatientDAO implements DataAccessObject<Patient>{
     public static PatientDAO getInstance(){
         return new PatientDAO();
     }
+    public Patient findOneByCCCD(String CCCD){
+        Patient patient = null;
+        try {
+            Connection connection = JDBCUtil.getConnection();
+            String sql ="select * from patient where cccd_patient = ? ";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1,CCCD);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                int id_patient = resultSet.getInt("id_patient");
+                String name_patient = resultSet.getNString("name_patient");
+                String cccd_patient = resultSet.getNString("cccd_patient");
+                String phone_patient = resultSet.getNString("phone_patient");
+                String address_patient = resultSet.getNString("address_patient");
+                String sex = resultSet.getNString("sex");
+                patient = new Patient(id_patient,name_patient,cccd_patient,phone_patient,address_patient,sex);
+            }
+            JDBCUtil.closeConnection(connection);
+        } catch (SQLException e){
+            e.getStackTrace();
+        }
+        return patient;
+    }
     @Override
     public void create(Patient patient) {
         try {
             Connection connection = JDBCUtil.getConnection();
-            String sql ="insert into patient(name_patient,cccd_patient,phone_patient,address_patient) values (?,?,?,?)";
+            String sql ="insert into patient(name_patient,cccd_patient,phone_patient,address_patient,sex) values (?,?,?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1,patient.getName_patient());
             preparedStatement.setString(2,patient.getCccd_patient());
             preparedStatement.setString(3,patient.getPhone_patient());
             preparedStatement.setString(4,patient.getAddress_patient());
+            preparedStatement.setString(5,patient.getSex());
             int check = preparedStatement.executeUpdate();
             JDBCUtil.closeConnection(connection);
         } catch (SQLException e){
@@ -41,7 +65,8 @@ public class PatientDAO implements DataAccessObject<Patient>{
                 String cccd_patient = resultSet.getNString("cccd_patient");
                 String phone_patient = resultSet.getNString("phone_patient");
                 String address_patient = resultSet.getNString("address_patient");
-                Patient patient = new Patient(id_patient,name_patient,cccd_patient,phone_patient,address_patient);
+                String sex = resultSet.getNString("sex");
+                Patient patient = new Patient(id_patient,name_patient,cccd_patient,phone_patient,address_patient,sex);
                 listAllPatient.add(patient);
             }
             JDBCUtil.closeConnection(connection);
@@ -69,13 +94,14 @@ public class PatientDAO implements DataAccessObject<Patient>{
     public void update(Patient patient) {
         try {
             Connection connection = JDBCUtil.getConnection();
-            String sql = "update patient set name_patient=?,cccd_patient=?,phone_patient=?,address_patient=? where id_patient=?;";
+            String sql = "update patient set name_patient=?,cccd_patient=?,phone_patient=?,address_patient=?, sex=? where id_patient=?;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1,patient.getName_patient());
             preparedStatement.setString(2,patient.getCccd_patient());
             preparedStatement.setString(3,patient.getPhone_patient());
             preparedStatement.setString(4,patient.getAddress_patient());
-            preparedStatement.setInt(5,patient.getId_patient());
+            preparedStatement.setString(5,patient.getSex());
+            preparedStatement.setInt(6,patient.getId_patient());
             int check = preparedStatement.executeUpdate();
             JDBCUtil.closeConnection(connection);
         } catch (SQLException e){
@@ -97,7 +123,8 @@ public class PatientDAO implements DataAccessObject<Patient>{
                 String cccd_patient = resultSet.getNString("cccd_patient");
                 String phone_patient = resultSet.getNString("phone_patient");
                 String address_patient = resultSet.getNString("address_patient");
-                Patient patient = new Patient(id_patient,name_patient,cccd_patient,phone_patient,address_patient);
+                String sex = resultSet.getNString("sex");
+                Patient patient = new Patient(id_patient,name_patient,cccd_patient,phone_patient,address_patient,sex);
                 listPatientThrowCondition.add(patient);
             }
             JDBCUtil.closeConnection(connection);

@@ -18,7 +18,7 @@ public class MainView extends JFrame {
 
     private void init() {
         this.setTitle("Hệ thống quản lý cấp phát thuốc bệnh nhân");
-        this.setSize(1000,600);
+        this.setSize(800,600);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -28,13 +28,13 @@ public class MainView extends JFrame {
         //Manage Dispensing
         Content content = new Content();
         JPanel jpContent = content.getContent();
-        ActionListener toolbarManageDispenseAL = new ToolbarManageDispenseAL(jpContent,content);
+        ActionListener toolbarManageDispenseAL = new ToolbarManageDispenseAL(jpContent,content,this);
         JPanel main = new JPanel(new BorderLayout());
         main.add(new ToolBar(toolbarManageDispenseAL).init(),BorderLayout.WEST);
         main.add(jpContent,BorderLayout.CENTER);
 
         JPanel jPanelMD = new view.componentsView.manageDrug.Content().getContent();
-        ActionListener toolbarManageDrug = new ToolbarManageDrugAL(jPanelMD);
+        ActionListener toolbarManageDrug = new ToolbarManageDrugAL(jPanelMD,this);
         JPanel manageDrug = new JPanel(new BorderLayout());
         manageDrug.add(new ToolBar(toolbarManageDrug).init(),BorderLayout.WEST);
         manageDrug.add(main,BorderLayout.CENTER);

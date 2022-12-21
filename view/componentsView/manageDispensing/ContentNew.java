@@ -18,8 +18,7 @@ public class ContentNew extends JPanel {
     private ActionListener actionListener;
     private JComboBox<Object> drug;
     private JTextField amount_drug;
-    private Vector<Vector<java.io.Serializable>> rows;
-    private Vector<Object> cols;
+    private Vector<Vector<java.io.Serializable>> data;
 
     public ContentNew(){
         this.contentNew = new JPanel();
@@ -31,28 +30,34 @@ public class ContentNew extends JPanel {
         Font font = new Font("Cascadia",Font.ITALIC,15);
         Font font_f = new Font("Cascadia",Font.BOLD,15);
 
-        JPanel jPTitle = new JPanel(new GridLayout(4,1));
+        JPanel jPTitle = new JPanel(new GridLayout(5,1));
         JLabel name = new JLabel("Tên bệnh nhân ");name.setFont(font_f);
         JLabel CCCD = new JLabel("CCCD ");CCCD.setFont(font_f);
         JLabel phone = new JLabel("Số điện thoại ");phone.setFont(font_f);
         JLabel address = new JLabel("Địa chỉ ");address.setFont(font_f);
+        JLabel sexPatient = new JLabel("Giới tính");sexPatient.setFont(font_f);
 
         jPTitle.add(name);
         jPTitle.add(CCCD);
         jPTitle.add(phone);
         jPTitle.add(address);
+        jPTitle.add(sexPatient);
 
 
-        JPanel jPInput= new JPanel(new GridLayout(4,1));
+        JPanel jPInput= new JPanel(new GridLayout(5,1));
         JTextField jfName = new JTextField(10);jfName.setFont(font);
         JTextField jfCCCD = new JTextField(10);jfCCCD.setFont(font);
         JTextField jfPhone = new JTextField(10);jfPhone.setFont(font);
         JTextField jfAddress = new JTextField(10);jfAddress.setFont(font);
+        Vector<Object> sex = new Vector<>();
+        sex.add("Nam");sex.add("Nữ");sex.add("Khác");
+        JComboBox<Object> sexSelection = new JComboBox<>(sex);sexSelection.setFont(font);
 
         jPInput.add(jfName);
         jPInput.add(jfCCCD);
         jPInput.add(jfPhone);
         jPInput.add(jfAddress);
+        jPInput.add(sexSelection);
 
         JPanel formAddInfo = new JPanel(new BorderLayout());
         formAddInfo.setBorder(BorderFactory.createTitledBorder("Thông tin bệnh nhân"));
@@ -80,22 +85,15 @@ public class ContentNew extends JPanel {
         this.amount_drug.setBorder(BorderFactory.createTitledBorder("Số lượng (số sản phẩm)"));
         formDrugLeft.add(this.amount_drug);
 
-        this.cols = new Vector<>();
-        this.cols.add("Tên thuốc");
-        this.cols.add("Số lượng");
-
-        this.rows = new Vector<Vector<java.io.Serializable>>();
-
+        this.data = new Vector<Vector<java.io.Serializable>>();
         Vector<java.io.Serializable> arow = new Vector<>();
         arow.add("HIHI");
         arow.add(1);
-
         Vector<java.io.Serializable> a1row = new Vector<>();
         a1row.add("HgHI");
         a1row.add(1);
-
-        this.rows.add(arow);
-        this.rows.add(a1row);
+        this.data.add(arow);
+        this.data.add(a1row);
 
         JPanel jpAddDrug = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
@@ -172,12 +170,8 @@ public class ContentNew extends JPanel {
         this.contentNew.add(footer,BorderLayout.SOUTH);
     }
 
-    public Vector<Vector<Serializable>> getRows() {
-        return rows;
-    }
-
-    public Vector<Object> getCols() {
-        return cols;
+    public Vector<Vector<Serializable>> getData() {
+        return data;
     }
 
     public JComboBox<Object> getDrug() {

@@ -16,29 +16,40 @@ import java.util.Vector;
 public class ContentHome extends JPanel {
     private ActionListener actionListener;
     private JPanel contentHome;
-    private Vector<Object> cols;
-    private Vector<Vector<Serializable>> rows;
+    private DefaultTableModel cols;
+    private Vector<Vector<Serializable>> data;
     private JTable table;
     private JTextField cccdTF;
     private JPanel tb;
     private JPanel card;
+    private JPanel infoOne;
     public ContentHome(){
         this.contentHome = new JPanel();
         this.actionListener = new ContentHomeAL(this);
         this.init();
     }
     public void init(){
+        this.infoOne = new JPanel(new BorderLayout());
         this.tb = new JPanel(new BorderLayout());
         this.tb.setBorder(BorderFactory.createTitledBorder("Thông tin các bệnh nhân được cấp thuốc"));
 
-        this.table = new JTable(this.getRows(),this.getCols());
-        this.table.setFont( new Font("Cascadia",Font.BOLD,13));
+        this.setCols();
+        this.table = new JTable(this.cols);
+        this.putData();
+        this.table.setFont( new Font("Cascadia",Font.BOLD,17));
         this.table.setEnabled(false);
+        this.table.setBackground(Color.PINK);
+        this.table.setForeground(Color.BLACK);
+        this.table.setOpaque(false);
+        this.table.setRowHeight(50);
+        this.table.getColumnModel().getColumn(0).setMinWidth(130);
+        this.table.getColumnModel().getColumn(0).setMaxWidth(130);
 
         JTableHeader jTableHeader = table.getTableHeader();
-        jTableHeader.setFont(new Font("Cascadia",Font.BOLD,15));
-        jTableHeader.setBackground(Color.BLUE);
-        jTableHeader.setForeground(Color.BLACK);
+        jTableHeader.setFont(new Font("Cascadia",Font.BOLD,18));
+        jTableHeader.setBackground(Color.gray);
+        jTableHeader.setForeground(Color.WHITE);
+        jTableHeader.setOpaque(false);
 
         JScrollPane jScrollPane = new JScrollPane(table);
 
@@ -52,16 +63,30 @@ public class ContentHome extends JPanel {
     private void setCard(){
         this.card = new JPanel(new CardLayout());
         this.card.add("table",this.tb);
-        this.card.add("info",this.infoOne());
+        this.card.add("info",this.infoOne);
     }
     public JPanel getCard(){
         return this.card;
     }
-    private JPanel infoOne(){
-        JPanel infoOne = new JPanel();
-        infoOne.setBackground(Color.blue);
-        return infoOne;
+    public void showFind(Patient patient){
+        this.infoOne.setBorder(BorderFactory.createTitledBorder("Thông tin cấp phát bệnh nhân: " + patient.getName_patient()));
+
+        JToolBar toolbar = new JToolBar();
+        toolbar.setFloatable(false);
+
+        JButton back = new JButton(new ImageIcon("src/public/image/homeDispense/Go-back-icon.png"));
+        back.setActionCommand("back");
+        back.addActionListener(this.actionListener);
+
+        JPanel content = new JPanel();
+        content.setBorder(BorderFactory.createLineBorder(Color.GREEN));
+
+        toolbar.add(back);
+        this.infoOne.add(toolbar,BorderLayout.NORTH);
+        this.infoOne.add(content,BorderLayout.CENTER);
+
     }
+
     private JPanel findOne(){
         JPanel findOne = new JPanel();
         findOne.setBorder(BorderFactory.createTitledBorder("Hiển thị thông tin cụ thể bệnh nhân theo CCCD"));
@@ -71,7 +96,7 @@ public class ContentHome extends JPanel {
         cccd.setFont(font);
         this.cccdTF = new JTextField(12);
         this.cccdTF.setFont(font);
-        JButton submit = new JButton("Tìm");
+        JButton submit = new JButton("Hiển thị");
         submit.setFont(font);
         submit.setBorderPainted(false);
         submit.setBackground(Color.blue);
@@ -91,31 +116,33 @@ public class ContentHome extends JPanel {
     }
 
     private void setCols(){
-        cols = new Vector<>();
-        cols.add("CCCD");
-        cols.add("Tên");
+        this.cols = new DefaultTableModel();
+        this.cols.addColumn("CCCD");
+        this.cols.addColumn("Tên");
     }
-    private Vector<Object> getCols(){
-        this.setCols();
-        return this.cols;
-    }
-    public void setRows(){
-        this.rows = new Vector<Vector<Serializable>>();
+    public Vector<Vector<Serializable>> getData(){
+        this.data = new Vector<Vector<Serializable>>();
         ArrayList<Patient> list = new PatientController().getPatientList();
         for(Patient ls : list){
             Vector<Serializable> v = new Vector<Serializable>();
             v.add(ls.getCccd_patient());
             v.add(ls.getName_patient());
-            this.rows.add(v);
+            this.data.add(v);
+        }
+        return this.data;
+    }
+    public void putData(){
+        this.getData();
+        for(Vector<Serializable> item : this.data){
+            this.cols.addRow(item);
         }
     }
-
-    private Vector<Vector<Serializable>> getRows() {
-        this.setRows();
-        return rows;
-    }
     public void refreshTable(){
-        this.table.setModel(new DefaultTableModel(this.getRows(),this.cols));
+        Vector<Serializable> col = new Vector<>();
+        for(int i = 0; i < this.cols.getColumnCount(); i++){
+            col.add(this.cols.getColumnName(i));
+        }
+        this.table.setModel(new DefaultTableModel(this.getData(),col));
     }
     public JPanel getContentHome() {
         return contentHome;

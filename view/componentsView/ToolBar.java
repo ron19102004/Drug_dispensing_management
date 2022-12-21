@@ -7,27 +7,25 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class ToolBar extends JPanel {
-    private JPanel toolbar;
+    private JToolBar toolbar;
     private ActionListener actionListener;
     public ToolBar(ActionListener actionListener){
-        this.toolbar = new JPanel();
+        this.toolbar = new JToolBar();
         this.actionListener = actionListener;
     }
-    public JPanel init(){
+    public JToolBar init(){
         this.toolbar.setLayout(new BoxLayout(this.toolbar,BoxLayout.Y_AXIS));
         this.toolbar.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+        this.toolbar.setFloatable(false);
+        this.toolbar.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+
         this.toolbar.add(this.home());
         this.toolbar.add(this.create());
         this.toolbar.add(this.edit());
         this.toolbar.add(this.refresh());
-        this.toolbar.add(this.jSeparator());
+        this.toolbar.addSeparator();
         this.toolbar.add(this.logout());
         return this.toolbar;
-    }
-    private JSeparator jSeparator(){
-        JSeparator jSeparator = new JSeparator();
-        jSeparator.getOrientation();
-        return  jSeparator;
     }
     private JButton home(){
         JButton home = new JButton(new ImageIcon("src/public/image/toolbar/Home-icon.png"));

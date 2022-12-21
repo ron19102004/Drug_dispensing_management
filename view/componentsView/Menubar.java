@@ -18,6 +18,7 @@ public class Menubar extends JMenuBar {
         this.actionListener = new MenubarAL(this);
         Font font = new Font("Cascadia",Font.BOLD,15);
         this.jMenuBar = new JMenuBar();
+        this.jMenuBar.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
         this.jMenuBar.add(this.jMenuFile(font));
         this.jMenuBar.add(this.jMenuEdit(font));
         this.jMenuBar.add(this.jMenuView(font));

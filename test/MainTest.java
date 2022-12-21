@@ -1,5 +1,6 @@
 package test;
 
+import view.LoginForm;
 import view.MainView;
 
 import javax.swing.*;
@@ -10,9 +11,9 @@ public class MainTest {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 //            new LoginForm();
             new MainView();
-//            new ListDrugSelected();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 }
+
