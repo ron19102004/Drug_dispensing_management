@@ -3,22 +3,26 @@ package view.componentsView.manageDispensing;
 import actionListener.manageDisspensing.ContentNewAL;
 import controller.DrugController;
 import dataAccessObject.DrugDAO;
+import model.AllocationDetails;
 import model.Drug;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Vector;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.*;
 
 public class ContentNew extends JPanel {
     private JPanel contentNew;
     private ActionListener actionListener;
     private JComboBox<Object> drug;
     private JTextField amount_drug;
-    private Vector<Vector<java.io.Serializable>> data;
+    private ArrayList<String[]> dataDrugSelected;
+    private JTextField jfAddress, jfPhone,jfCCCD, jfName, day;
+    private JComboBox<Object> sexSelection;
+    private JComboBox<Integer> year,month;
+    private ArrayList<Drug> arrDrug;
 
     public ContentNew(){
         this.contentNew = new JPanel();
@@ -45,18 +49,18 @@ public class ContentNew extends JPanel {
 
 
         JPanel jPInput= new JPanel(new GridLayout(5,1));
-        JTextField jfName = new JTextField(10);jfName.setFont(font);
-        JTextField jfCCCD = new JTextField(10);jfCCCD.setFont(font);
-        JTextField jfPhone = new JTextField(10);jfPhone.setFont(font);
-        JTextField jfAddress = new JTextField(10);jfAddress.setFont(font);
+        this.jfName = new JTextField(10);this.jfName.setFont(font);
+        this.jfCCCD = new JTextField(10);this.jfCCCD.setFont(font);
+        this.jfPhone = new JTextField(10);this.jfPhone.setFont(font);
+        this.jfAddress = new JTextField(10);this.jfAddress.setFont(font);
         Vector<Object> sex = new Vector<>();
         sex.add("Nam");sex.add("Nữ");sex.add("Khác");
-        JComboBox<Object> sexSelection = new JComboBox<>(sex);sexSelection.setFont(font);
+        this.sexSelection = new JComboBox<>(sex);this.sexSelection.setFont(font);
 
-        jPInput.add(jfName);
-        jPInput.add(jfCCCD);
-        jPInput.add(jfPhone);
-        jPInput.add(jfAddress);
+        jPInput.add(this.jfName);
+        jPInput.add(this.jfCCCD);
+        jPInput.add(this.jfPhone);
+        jPInput.add(this.jfAddress);
         jPInput.add(sexSelection);
 
         JPanel formAddInfo = new JPanel(new BorderLayout());
@@ -70,30 +74,38 @@ public class ContentNew extends JPanel {
         JPanel formDrugLeft = new JPanel();
         formDrugLeft.setLayout(new BoxLayout(formDrugLeft,BoxLayout.Y_AXIS));
 
-        ArrayList<Drug> arrDrug = DrugController.getInstance().getDrugs();
+        this.arrDrug = DrugController.getInstance().getDrugs();
         Vector<Object> nameDrug = new Vector<>();
-        for(Drug drug : arrDrug){
-            nameDrug.add(drug.getName_drug()+" - "+" Còn lại " + drug.getRemainingMount()+" sản phẩm");
+        for(Drug drug : this.arrDrug){
+            nameDrug.add(drug.getName_drug());
         }
         this.drug = new JComboBox<>(nameDrug);
         this.drug.setFont(font_f);
         this.drug.setBorder(BorderFactory.createTitledBorder("Tên thuốc"));
         formDrugLeft.add(this.drug);
 
+        int i = this.drug.getSelectedIndex();
+        JTextField remainingAmount = new JTextField();
+        remainingAmount.setFont(font_f);
+        remainingAmount.setEditable(false);
+        remainingAmount.setBorder(BorderFactory.createTitledBorder("Số lượng sản phẩm còn trong kho"));
+        remainingAmount.setText(this.arrDrug.get(i).getRemainingMount()+" sản phẩm");
+        formDrugLeft.add(remainingAmount);
+        this.drug.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                int i = drug.getSelectedIndex();
+                arrDrug = DrugDAO.getInstance().selectAll();
+                remainingAmount.setText(arrDrug.get(i).getRemainingMount()+" sản phẩm");
+            }
+        });
+
         this.amount_drug = new JTextField();
         this.amount_drug.setFont(font_f);
-        this.amount_drug.setBorder(BorderFactory.createTitledBorder("Số lượng (số sản phẩm)"));
+        this.amount_drug.setBorder(BorderFactory.createTitledBorder("Số lượng cần cấp phát (số sản phẩm)"));
         formDrugLeft.add(this.amount_drug);
 
-        this.data = new Vector<Vector<java.io.Serializable>>();
-        Vector<java.io.Serializable> arow = new Vector<>();
-        arow.add("HIHI");
-        arow.add(1);
-        Vector<java.io.Serializable> a1row = new Vector<>();
-        a1row.add("HgHI");
-        a1row.add(1);
-        this.data.add(arow);
-        this.data.add(a1row);
+        this.dataDrugSelected = new ArrayList<String[]>();
 
         JPanel jpAddDrug = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
@@ -102,7 +114,6 @@ public class ContentNew extends JPanel {
         listDrug.setForeground(Color.WHITE);
         listDrug.setBorderPainted(false);
         jpAddDrug.add(listDrug);
-        formDrugLeft.add(jpAddDrug);
         listDrug.addActionListener(this.actionListener);
 
         JButton addDrug = new JButton("Thêm thuốc");
@@ -110,39 +121,12 @@ public class ContentNew extends JPanel {
         addDrug.setForeground(Color.WHITE);
         addDrug.setBorderPainted(false);
         jpAddDrug.add(addDrug);
-        formDrugLeft.add(jpAddDrug);
         addDrug.addActionListener(this.actionListener);
 
-        Vector<Object> dayNum = new Vector<>();
-        for(int i = 1; i<=30; i++){
-            dayNum.add(i);
-        }
-        JComboBox<Object> day = new JComboBox<>(dayNum);
-        day.setFont(font_f);
-
-        Vector<Object> monthNum = new Vector<>();
-        for(int i = 1; i<=12; i++){
-            monthNum.add(i);
-        }
-        JComboBox<Object> month = new JComboBox<>(monthNum);
-        month.setFont(font_f);
-
-        Vector<Object> yearNum = new Vector<>();
-        Calendar calendar = Calendar.getInstance();
-        for(int i = 1950; i<= calendar.get(Calendar.YEAR); i++){
-            yearNum.add(i);
-        }
-        JComboBox<Object> year = new JComboBox<>(yearNum);
-        year.setFont(font_f);
-
-        JPanel dateDispensing = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        dateDispensing.setBorder(BorderFactory.createTitledBorder("Ngày cấp thuốc"));
-        dateDispensing.add(day);
-        dateDispensing.add(month);
-        dateDispensing.add(year);
+        formDrugLeft.add(jpAddDrug);
 
         formDrug.add(formDrugLeft);
-        formDrug.add(dateDispensing);
+        formDrug.add(this.dateDispensing(font_f));
 
         JPanel footer = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
@@ -151,6 +135,7 @@ public class ContentNew extends JPanel {
         delInfo.setBackground(Color.RED);
         delInfo.setForeground(Color.WHITE);
         delInfo.setBorderPainted(false);
+        delInfo.addActionListener(this.actionListener);
         footer.add(delInfo);
 
         JButton submit = new JButton("Hoàn tất");
@@ -158,6 +143,7 @@ public class ContentNew extends JPanel {
         submit.setBackground(Color.BLUE);
         submit.setForeground(Color.WHITE);
         submit.setBorderPainted(false);
+        submit.addActionListener(this.actionListener);
         footer.add(submit);
 
         JPanel formNorth = new JPanel();
@@ -169,9 +155,68 @@ public class ContentNew extends JPanel {
         this.contentNew.add(formNorth,BorderLayout.NORTH);
         this.contentNew.add(footer,BorderLayout.SOUTH);
     }
+    public JPanel dateDispensing(Font font_f){
+        Vector<Integer> yearNum = new Vector<>();
+        Calendar calendar = Calendar.getInstance();
+        for(int i =  calendar.get(Calendar.YEAR); i >= 1950; i--) {
+            yearNum.add(i);
+        }
 
-    public Vector<Vector<Serializable>> getData() {
-        return data;
+        this.year = new JComboBox<>(yearNum);
+        this.year.setFont(font_f);
+        Vector<Integer> monthNum = new Vector<>();
+        for(int i = 1; i<=12; i++){
+            monthNum.add(i);
+        }
+        this.month = new JComboBox<>(monthNum);
+        this.month.setFont(font_f);
+
+        this.day = new JTextField(3);
+        this.day.setFont(font_f);
+
+
+        JPanel dateDispensing = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        dateDispensing.setBorder(BorderFactory.createTitledBorder("Ngày cấp thuốc"));
+        dateDispensing.add(this.day);
+        dateDispensing.add(this.month);
+        dateDispensing.add(this.year);
+
+        return dateDispensing;
+    }
+    public boolean setData(){
+        int i = this.drug.getSelectedIndex();
+        if(!this.amount_drug.getText().isBlank()){
+            if(Integer.parseInt(this.amount_drug.getText())>0
+                    &&Integer.parseInt(this.amount_drug.getText())<=this.arrDrug.get(i).getRemainingMount()
+            )
+            {
+                for(String[] dt : this.dataDrugSelected){
+                    if(dt[0].equals(this.arrDrug.get(i).getName_drug())){
+                        int mountDrug = Integer.parseInt(this.amount_drug.getText()) + Integer.parseInt(dt[dt.length-1]);
+                        dt[dt.length-1]= mountDrug+"";
+                        int amount_drug = this.arrDrug.get(i).getRemainingMount() - Integer.parseInt(this.amount_drug.getText());
+                        this.arrDrug.get(i).setRemainingMount(amount_drug);
+                        DrugDAO.getInstance().updateMountDrug(this.arrDrug.get(i));
+                        return true;
+                    }
+                }
+                String[] data = {this.arrDrug.get(i).getName_drug(),this.amount_drug.getText()};
+                this.dataDrugSelected.add(data);
+                int amount_drug = this.arrDrug.get(i).getRemainingMount() - Integer.parseInt(this.amount_drug.getText());
+                this.arrDrug.get(i).setRemainingMount(amount_drug);
+                DrugDAO.getInstance().updateMountDrug(this.arrDrug.get(i));
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void setAmount_drug(String str) {
+        this.amount_drug.setText(str);
+    }
+
+    public ArrayList<String[]> getDataDrugSelected() {
+        return dataDrugSelected;
     }
 
     public JComboBox<Object> getDrug() {
@@ -184,5 +229,41 @@ public class ContentNew extends JPanel {
 
     public JPanel getContentNew() {
         return contentNew;
+    }
+
+    public String getJfAddress() {
+        return this.jfAddress.getText().trim();
+    }
+
+    public String getJfPhone() {
+        return this.jfPhone.getText().trim();
+    }
+
+    public String getJfCCCD() {
+        return this.jfCCCD.getText().trim();
+    }
+
+    public String getJfName() {
+        return this.jfName.getText().trim();
+    }
+
+    public JComboBox<Object> getSexSelection() {
+        return sexSelection;
+    }
+
+    public JTextField getDay() {
+        return day;
+    }
+
+    public JComboBox<Integer> getYear() {
+        return year;
+    }
+
+    public JComboBox<Integer> getMonth() {
+        return month;
+    }
+
+    public ArrayList<Drug> getArrDrug() {
+        return arrDrug;
     }
 }

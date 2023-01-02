@@ -34,7 +34,8 @@ public class PatientDAO implements DataAccessObject<Patient>{
         return patient;
     }
     @Override
-    public void create(Patient patient) {
+    public int create(Patient patient) {
+        int check = 0;
         try {
             Connection connection = JDBCUtil.getConnection();
             String sql ="insert into patient(name_patient,cccd_patient,phone_patient,address_patient,sex) values (?,?,?,?,?)";
@@ -44,11 +45,12 @@ public class PatientDAO implements DataAccessObject<Patient>{
             preparedStatement.setString(3,patient.getPhone_patient());
             preparedStatement.setString(4,patient.getAddress_patient());
             preparedStatement.setString(5,patient.getSex());
-            int check = preparedStatement.executeUpdate();
+            check = preparedStatement.executeUpdate();
             JDBCUtil.closeConnection(connection);
         } catch (SQLException e){
             e.getStackTrace();
         }
+        return check;
     }
 
     @Override
@@ -77,21 +79,24 @@ public class PatientDAO implements DataAccessObject<Patient>{
     }
 
     @Override
-    public void delete(Patient patient) {
+    public int delete(Patient patient) {
+        int check = 0;
         try {
             Connection connection = JDBCUtil.getConnection();
             String sql ="delete from patient where id_patient=?;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1,patient.getId_patient());
-            int check = preparedStatement.executeUpdate();
+            check = preparedStatement.executeUpdate();
             JDBCUtil.closeConnection(connection);
         } catch (SQLException e){
             e.getStackTrace();
         }
+        return check;
     }
 
     @Override
-    public void update(Patient patient) {
+    public int update(Patient patient) {
+        int check = 0;
         try {
             Connection connection = JDBCUtil.getConnection();
             String sql = "update patient set name_patient=?,cccd_patient=?,phone_patient=?,address_patient=?, sex=? where id_patient=?;";
@@ -102,11 +107,12 @@ public class PatientDAO implements DataAccessObject<Patient>{
             preparedStatement.setString(4,patient.getAddress_patient());
             preparedStatement.setString(5,patient.getSex());
             preparedStatement.setInt(6,patient.getId_patient());
-            int check = preparedStatement.executeUpdate();
+            check = preparedStatement.executeUpdate();
             JDBCUtil.closeConnection(connection);
         } catch (SQLException e){
             e.getStackTrace();
         }
+        return check;
     }
 
     @Override

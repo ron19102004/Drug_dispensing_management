@@ -1,17 +1,24 @@
 package view.componentsView.manageDispensing;
 
+import model.AllocationDetails;
+import model.Drug;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class ListDrugSelected extends JFrame {
     private DefaultTableModel cols;
-    private Vector<Vector<java.io.Serializable>> data;
+    private ArrayList<String[]> data;
     private JTable tableModelDrugSelected;
-    public ListDrugSelected(Vector<Vector<java.io.Serializable>> data ){
+    private ArrayList<Drug> drugArrayList;
+    public ListDrugSelected(ArrayList<String[]> data , ArrayList<Drug> drugArrayList){
         this.data = data;
+        this.drugArrayList = drugArrayList;
         this.init();
         this.setVisible(true);
     }
@@ -29,6 +36,11 @@ public class ListDrugSelected extends JFrame {
         this.putData();
         this.tableModelDrugSelected.setFont(font_f);
         this.tableModelDrugSelected.setEnabled(false);
+        JTableHeader jTableHeader = this.tableModelDrugSelected.getTableHeader();
+        jTableHeader.setFont(font_f);
+        jTableHeader.setBackground(Color.DARK_GRAY);
+        jTableHeader.setForeground(Color.LIGHT_GRAY);
+        jTableHeader.setOpaque(false);
         JScrollPane tbDrugSel = new JScrollPane(this.tableModelDrugSelected,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         tbDrugSel.setBorder(BorderFactory.createTitledBorder("Danh sách thuốc chọn"));
 
@@ -41,8 +53,8 @@ public class ListDrugSelected extends JFrame {
         this.cols.addColumn("Số lượng");
     }
     private void putData(){
-        for(Vector<java.io.Serializable> item : data){
-            this.cols.addRow(item);
+        for(String[] data : this.data){
+            this.cols.addRow(data);
         }
     }
 }

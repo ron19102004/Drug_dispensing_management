@@ -13,6 +13,11 @@ public class AllocationDetails {
         this.drug_dispensing_date = drug_dispensing_date;
     }
 
+    public AllocationDetails(int id_drug, int amount_drug) {
+        this.id_drug = id_drug;
+        this.amount_drug = amount_drug;
+    }
+
     public int getAmount_drug() {
         return amount_drug;
     }

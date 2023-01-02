@@ -13,8 +13,8 @@ public class DrugDAO implements DataAccessObject<Drug>{
     }
 
     @Override
-    public void create(Drug drug) {
-
+    public int create(Drug drug) {
+        return  0;
     }
 
     @Override
@@ -43,15 +43,30 @@ public class DrugDAO implements DataAccessObject<Drug>{
     }
 
     @Override
-    public void delete(Drug drug) {
-
+    public int delete(Drug drug) {
+        return  0;
     }
 
     @Override
-    public void update(Drug drug) {
-
+    public int update(Drug drug) {
+        return 0;
     }
 
+    public int updateMountDrug(Drug drug){
+        int check = 0;
+        try {
+            Connection connection = JDBCUtil.getConnection();
+            String sql = "update drug set remainingAmount=? where id_drug =?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1,drug.getRemainingMount());
+            preparedStatement.setInt(2,drug.getId_drug());
+            check = preparedStatement.executeUpdate();
+            JDBCUtil.closeConnection(connection);
+        } catch (SQLException e){
+            e.getStackTrace();
+        }
+        return check;
+    }
     @Override
     public ArrayList selectThrowCondition(String condition) {
         return null;

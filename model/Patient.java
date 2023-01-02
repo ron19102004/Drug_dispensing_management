@@ -16,6 +16,13 @@ public class Patient {
         this.address_patient = address_patient;
         this.sex = sex;
     }
+    public Patient( String name_patient, String cccd_patient, String phone_patient, String address_patient,String sex) {
+        this.name_patient = name_patient;
+        this.cccd_patient = cccd_patient;
+        this.phone_patient = phone_patient;
+        this.address_patient = address_patient;
+        this.sex = sex;
+    }
     public String getCccd_patient() {
         return cccd_patient;
     }
@@ -62,5 +69,17 @@ public class Patient {
 
     public void setAddress_patient(String address_patient) {
         this.address_patient = address_patient;
+    }
+
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "id_patient=" + id_patient +
+                ", name_patient='" + name_patient + '\'' +
+                ", cccd_patient='" + cccd_patient + '\'' +
+                ", phone_patient='" + phone_patient + '\'' +
+                ", address_patient='" + address_patient + '\'' +
+                ", sex='" + sex + '\'' +
+                '}';
     }
 }

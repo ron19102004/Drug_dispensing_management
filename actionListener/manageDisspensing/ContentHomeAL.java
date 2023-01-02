@@ -21,7 +21,7 @@ public class ContentHomeAL implements ActionListener {
             if(!(this.contentHome.getCccdTF().isBlank())
                     &&(this.contentHome.getCccdTF().length()==12)
                     &&(this.isDigits(this.contentHome.getCccdTF()))){
-                this.contentHome.showFind(PatientDAO.getInstance().findOneByCCCD(this.contentHome.getCccdTF()));
+                this.contentHome.setInfoOne(PatientDAO.getInstance().findOneByCCCD(this.contentHome.getCccdTF()));
                 CardLayout cardLayout = (CardLayout) this.contentHome.getCard().getLayout();
                 cardLayout.show(this.contentHome.getCard(),"info");
             } else {
@@ -30,6 +30,7 @@ public class ContentHomeAL implements ActionListener {
             }
         }
         else if (src.equals("back")){
+            this.contentHome.setCccdTF("");
             CardLayout cardLayout = (CardLayout) this.contentHome.getCard().getLayout();
             cardLayout.show(this.contentHome.getCard(),"table");
         }

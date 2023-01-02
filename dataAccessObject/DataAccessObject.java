@@ -3,9 +3,9 @@ package dataAccessObject;
 import java.util.ArrayList;
 
 public interface DataAccessObject<R> {
-    public void create(R r);
+    public int create(R r);
     public ArrayList<R>  selectAll();
-    public void delete(R r);
-    public void update(R r);
+    public int delete(R r);
+    public int update(R r);
     public ArrayList<R> selectThrowCondition(String condition);
 }

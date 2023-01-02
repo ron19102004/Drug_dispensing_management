@@ -9,10 +9,11 @@ public class JDBCUtil {
         Connection connection = null;
         try {
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-            String username ="root";
-            String password = "";
-            String url = "jdbc:mysql://localhost:3306/drug_dispensing_management";
-            connection = DriverManager.getConnection(url,username,password);
+            String USERNAME ="root";
+            String PASSWORD = "";
+            String DATABASE="drug_dispensing_management";
+            String url = "jdbc:mysql://localhost:3306/"+DATABASE;
+            connection = DriverManager.getConnection(url,USERNAME,PASSWORD);
         } catch (SQLException e){
             e.getStackTrace();
         }
